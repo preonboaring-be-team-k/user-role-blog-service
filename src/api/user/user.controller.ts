@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserService } from './user.service';
 
@@ -13,9 +14,10 @@ export class UserController {
   }
 
   // 로그인
+  @UseGuards(AuthGuard('local'))
   @Post('/login')
-  login(email: string, password: string) {
-    return this.userService.login(email, password);
+  login(@Req() req) {
+    return this.userService.login(req.user);
   }
 
   // 회원탈퇴

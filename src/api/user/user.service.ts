@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/createUser.dto';
@@ -8,7 +12,7 @@ import * as bcrypt from 'bcryptjs';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
   async signup(createUserDto: CreateUserDto) {
@@ -34,8 +38,17 @@ export class UserService {
     return result;
   }
 
-  login(email: string, password: string) {
-    return { email, password };
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      delete user.password;
+      return user;
+    } else throw new UnauthorizedException('비밀번호가 틀립니다.');
+  }
+
+  async login(user) {
+    return user;
   }
 
   deleteUserByEmail(email: string, password: string) {
