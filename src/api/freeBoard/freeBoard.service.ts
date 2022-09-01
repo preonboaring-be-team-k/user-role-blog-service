@@ -78,4 +78,18 @@ export class FreeBoardService {
       await this.freeBoardRepository.update({ id }, editFreeBoardDto);
     }
   }
+
+  /**
+   * @code writer 김현균
+   * @description 자유게시판 삭제 API
+   */
+  async deleteFreeBoardById(id: number) {
+    // [x] Not found 예외처리
+    const count = await this.freeBoardRepository.countBy({ id });
+    if (count < 1) {
+      throw new HttpException('Not found', 404);
+    }
+
+    await this.freeBoardRepository.softDelete({ id });
+  }
 }

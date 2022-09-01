@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Patch,
@@ -67,5 +68,17 @@ export class FreeBoardController {
     @Body() editFreeBoardDto: EditFreeBoardDto,
   ) {
     return this.freeBoardService.editFreeBoardById(id, editFreeBoardDto);
+  }
+
+  /**
+   * @code writer 김현균
+   * @description 자유게시판 삭제 API
+   *
+   * @DELETE ("/free-board/1")
+   */
+  @Delete(':id')
+  @HttpCode(204)
+  async deleteFreeBoardById(@Param('id', ParseIntPipe) id: number) {
+    return this.freeBoardService.deleteFreeBoardById(id);
   }
 }
