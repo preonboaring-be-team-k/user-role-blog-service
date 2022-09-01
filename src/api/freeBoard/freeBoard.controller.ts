@@ -6,6 +6,14 @@ import { FreeBoardService } from './freeBoard.service';
 export class FreeBoardController {
   constructor(private readonly freeBoardService: FreeBoardService) {}
 
+  /**
+   * @code writer 김현균
+   * @description 자유게시판 생성 API
+   *
+   * @POST ("/free-board")
+   *
+   * @returns null
+   */
   @Post()
   async createFreeBoard(@Body() createFreeBoardDto: CreateFreeBoardDto) {
     return this.freeBoardService.createFreeBoard(createFreeBoardDto);
