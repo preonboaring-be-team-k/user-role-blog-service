@@ -49,6 +49,11 @@ export class FreeBoardService {
    * @returns FreeBoardDto
    */
   async getFreeBoardById(id: number) {
+    const count = await this.freeBoardRepository.countBy({ id });
+    if (count < 1) {
+      throw new HttpException('Not found', 404);
+    }
+
     const freeBoard = await this.freeBoardRepository.findOneBy({ id });
     return new FreeBoardDto(freeBoard);
   }
