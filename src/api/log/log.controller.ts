@@ -9,7 +9,7 @@ import {
   ApiQuery,
   ApiResponse,
 } from '@nestjs/swagger';
-import { SearchType, Sort, Status } from 'src/common/variables.util';
+import { SearchType, Sort, Status } from './entity/variables.util';
 import { LogService } from './log.service';
 
 @Controller('log')
@@ -45,7 +45,7 @@ export class LogController {
   @ApiQuery({ name: 'page', required: false })
   @ApiOperation({ summary: '[관리자] 의뢰자 리스트 조회 API' })
   @Get()
-  getWorkers(@Request() req) {
+  getLogs(@Request() req) {
     // @Headers('x-access-token') jwt, @Request() req
     // jwt 해독
 
