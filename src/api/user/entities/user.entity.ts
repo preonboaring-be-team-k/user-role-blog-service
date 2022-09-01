@@ -10,7 +10,7 @@ import { Role } from './role.enum';
 import { Status } from './status.enum';
 
 @Entity('User')
-export class User {
+export class UserEntity {
   @ApiProperty({
     example: 1,
     description: 'id - 자동생성',
