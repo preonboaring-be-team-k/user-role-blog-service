@@ -17,9 +17,12 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { User } from './decorator/user.decorator';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
+import { LoginRequestDto } from './dtos/loginRequest.dto';
 import { UserEntity } from './entities/user.entity';
+import { LocalAuthGuard } from './guard/local.guard';
 import { UserService } from './user.service';
 
 @ApiTags('User API')
@@ -40,14 +43,14 @@ export class UserController {
   @ApiOperation(UserAPIDocs.loginOperation())
   @ApiResponse(UserAPIDocs.loginResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.loginUnauthorizedResponse())
-  @UseGuards(AuthGuard('local'))
   @Post('/login')
-  login(@Req() req) {
-    return this.userService.login(req.user);
+  login(@Body() loginRequestDto: LoginRequestDto) {
+    return this.userService.login(loginRequestDto);
   }
 
   // 회원탈퇴
   @ApiOperation(UserAPIDocs.deleteUserOperation())
+  @UseGuards(LocalAuthGuard)
   @Delete('/')
   deleteUser(@Query('id', ParseIntPipe) id: number) {
     return this.userService.deleteUserByEmail(id);

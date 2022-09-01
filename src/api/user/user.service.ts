@@ -9,6 +9,7 @@ import { CreateUserDto } from './dtos/createUser.dto';
 import { UserEntity } from './entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { Status } from './entities/status.enum';
+import { LoginRequestDto } from './dtos/loginRequest.dto';
 
 @Injectable()
 export class UserService {
@@ -42,14 +43,19 @@ export class UserService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) throw new UnauthorizedException('존재하지 않는 계정입니다.');
+
     if (user && (await bcrypt.compare(password, user.password))) {
       delete user.password;
       return user;
-    } else throw new UnauthorizedException('회원정보가 틀립니다.');
+    } else throw new UnauthorizedException('비밀번호가 틀립니다.');
   }
 
-  async login(user) {
-    return user;
+  async login(loginRequestDto: LoginRequestDto) {
+    const { email, password } = loginRequestDto;
+    const result = await this.validateUser(email, password);
+    return result;
   }
 
   async deleteUserByEmail(id: number) {

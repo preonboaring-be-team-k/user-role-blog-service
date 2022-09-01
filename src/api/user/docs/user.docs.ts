@@ -47,12 +47,12 @@ export class UserAPIDocs {
 
   static loginUnauthorizedResponse() {
     return {
+      description: '이메일 또는 비밀번호 가 틀린 경우.',
       status: 401,
-      description: '실패',
       schema: {
         example: {
           statusCode: 401,
-          message: '회원정보가 틀립니다.',
+          message: '비밀번호가 틀립니다.',
           error: 'Unauthorized',
         },
       },
@@ -63,6 +63,26 @@ export class UserAPIDocs {
     return {
       description: '로그인 성공 응답값입니다.',
       status: 200,
+      schema: {
+        example: {
+          id: 4,
+          email: 'seastory624@gmail.com',
+          name: '장성우',
+          gender: '남자',
+          age: 27,
+          role: 'CUSTOMER',
+          status: 'ACTIVE',
+          createAt: '2022-09-01T01:24:07.000Z',
+          deleteAt: null,
+        },
+      },
+    };
+  }
+
+  static loginResponse2() {
+    return {
+      description: '로그인 성공 응답값입니다.',
+      status: 400,
       schema: {
         example: {
           id: 4,
