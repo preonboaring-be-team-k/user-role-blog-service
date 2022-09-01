@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcryptjs';
+import { Status } from './entities/status.enum';
 
 @Injectable()
 export class UserService {
@@ -51,7 +52,11 @@ export class UserService {
     return user;
   }
 
-  deleteUserByEmail(email: string, password: string) {
-    return { email, password };
+  async deleteUserByEmail(id: number) {
+    const found = await this.userRepository.findOne({ where: { id } });
+    found.deleteAt = new Date();
+    found.status = Status.STOP;
+    const result = await this.userRepository.save(found);
+    return result;
   }
 }

@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  ParseIntPipe,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserService } from './user.service';
@@ -22,7 +31,7 @@ export class UserController {
 
   // 회원탈퇴
   @Delete('/')
-  deleteUser(email: string, password: string) {
-    return this.userService.deleteUserByEmail(email, password);
+  deleteUser(@Query('id', ParseIntPipe) id: number) {
+    return this.userService.deleteUserByEmail(id);
   }
 }
