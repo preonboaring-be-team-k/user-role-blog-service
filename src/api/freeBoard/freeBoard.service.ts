@@ -37,4 +37,17 @@ export class FreeBoardService {
     const freeBoards = await this.freeBoardRepository.find();
     return freeBoards.map((freeBoard) => new FreeBoardDto(freeBoard));
   }
+
+  /**
+   * @param CreateFreeBoardDto
+   *
+   * @code writer 김현균
+   * @description 자유게시판 조회 API
+   *
+   * @returns FreeBoardDto
+   */
+  async getFreeBoardById(id: number) {
+    const freeBoard = await this.freeBoardRepository.findOneBy({ id });
+    return new FreeBoardDto(freeBoard);
+  }
 }

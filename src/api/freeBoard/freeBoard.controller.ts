@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
@@ -30,5 +37,18 @@ export class FreeBoardController {
   @Get()
   async getFreeBoards() {
     return this.freeBoardService.getFreeBoards();
+  }
+
+  /**
+   * @code writer 김현균
+   * @description 자유게시판 조회 API
+   *
+   * @GET ("/free-board")
+   *
+   * @returns json
+   */
+  @Get(':id')
+  async getFreeBoardById(@Param('id', ParseIntPipe) id: number) {
+    return this.freeBoardService.getFreeBoardById(id);
   }
 }
