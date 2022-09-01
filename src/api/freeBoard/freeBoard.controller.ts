@@ -43,7 +43,7 @@ export class FreeBoardController {
    * @code writer 김현균
    * @description 자유게시판 조회 API
    *
-   * @GET ("/free-board")
+   * @GET ("/free-board/1")
    *
    * @returns json
    */
