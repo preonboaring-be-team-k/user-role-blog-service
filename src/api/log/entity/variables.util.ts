@@ -8,7 +8,11 @@ export enum Status {
 export enum Sort {
   DESC = 'DESC',
   ASC = 'ASC',
-  nickname = 'nickName',
+}
+
+export enum Gender {
+  MAN = 'MAN',
+  WOMAN = 'WOMAN',
 }
 
 // user searchType filter
@@ -18,4 +22,4 @@ export enum SearchType {
   phoneNumber = 'phoneNumber',
 }
 
-export const PAGE_SIZE = 20;
+export const PAGE_SIZE = 10;
