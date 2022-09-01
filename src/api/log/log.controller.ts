@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Request
+} from '@nestjs/common';
 import {
   ApiHeader,
   ApiOperation,
   ApiQuery,
   ApiResponse,
 } from '@nestjs/swagger';
-import {SearchType, Sort, Status } from 'src/common/variables.util';
-import {LogService} from "./log.service";
+import { SearchType, Sort, Status } from 'src/common/variables.util';
+import { LogService } from './log.service';
 
 @Controller('log')
 export class LogController {
@@ -41,7 +45,7 @@ export class LogController {
   @ApiQuery({ name: 'page', required: false })
   @ApiOperation({ summary: '[관리자] 의뢰자 리스트 조회 API' })
   @Get()
-  getWorkers() {
+  getWorkers(@Request() req) {
     // @Headers('x-access-token') jwt, @Request() req
     // jwt 해독
 
@@ -55,6 +59,6 @@ export class LogController {
     // ) {
     //   return response.CANNOT_ACCESS_BY_AUTHORITY;
     // }
-    return this.logService.retrieveUsers(req, payload);
+    return this.logService.retrieveUsers(req);
   }
 }

@@ -1,22 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { getManager } from 'typeorm';
-import {PAGE_SIZE, Sort, Status} from "../../common/variables.util";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
+import { PAGE_SIZE, Sort, Status } from '../../common/variables.util';
+import { Log } from './entity/log.entity';
 
 @Injectable()
 export class LogService {
-  async retrieveUsers(request: any, payload: Payload) {
+  constructor(
+    @InjectRepository(Log)
+    private readonly projectRepository: Repository<Log>,
+    private connection: Connection,
+  ) {}
+  async retrieveUsers(request: any) {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
       let users = [];
-      const requesterCount = await getManager().createQueryBuilder(
-        GridgeRequester,
-        'requester',
+      const requesterCount = await this.projectRepository.createQueryBuilder(
+        Log,
+        'log',
       );
 
       // query 생성
       const queryResult = await getManager().createQueryBuilder(
         GridgeRequester,
         'requester',
-      )
+      );
 
       // 상태 필터
       if (request.query.status == Status.ACTIVE) {
@@ -82,7 +92,6 @@ export class LogService {
       };
 
       // const result = makeResponse(response.SUCCESS, data);
-
 
       // return result;
     } catch (error) {
