@@ -35,4 +35,13 @@ export class AdminBoard {
         this.discription = updateBoardDto.discription;
         return this;
     }
+
+    public delete(): void {
+        this.isDeleted = true;
+        this.recordDeleteTime();
+    }
+
+    recordDeleteTime() {
+        this.deleteAt = new Date();
+    }
 }

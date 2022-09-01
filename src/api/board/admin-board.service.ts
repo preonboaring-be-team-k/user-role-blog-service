@@ -45,4 +45,13 @@ export class AdminBoardService {
        
         return await this.adminBoardRepository.save(board.update(updateBoardDto));
     }
+
+    async removeBoard(id: number) {
+        const board: AdminBoard = await this.adminBoardRepository.findOne({
+            where: { id }
+        });
+
+        board.delete();
+        return await this.adminBoardRepository.save(board);
+    }
 }
