@@ -16,6 +16,7 @@ export class FreeBoardAPIDocs {
   static CreateCreatedResponse() {
     return {
       description: 'Created',
+      type: FreeBoardDto,
     };
   }
 
@@ -53,6 +54,12 @@ export class FreeBoardAPIDocs {
     return {
       summary: '게시물 수정',
       description: '게시물을 수정합니다.',
+    };
+  }
+  static EditOkResponse() {
+    return {
+      description: 'Ok',
+      type: FreeBoardDto,
     };
   }
 

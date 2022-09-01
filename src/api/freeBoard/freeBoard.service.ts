@@ -20,20 +20,19 @@ export class FreeBoardService {
    * @code writer 김현균
    * @description 자유게시판 생성 API
    *
-   * @returns null
+   * @return FreeBoardDto
    */
   async createFreeBoard(createFreeBoardDto: CreateFreeBoardDto) {
     const newFreeBoard = this.freeBoardRepository.create(createFreeBoardDto);
     await this.freeBoardRepository.save(newFreeBoard);
+    return new FreeBoardDto(newFreeBoard);
   }
 
   /**
-   * @param CreateFreeBoardDto
-   *
    * @code writer 김현균
    * @description 자유게시판 리스트 조회 API
    *
-   * @returns FreeBoardListDto
+   * @returns [FreeBoardListDto]
    */
   async getFreeBoards() {
     const freeBoards = await this.freeBoardRepository.find();
@@ -41,7 +40,7 @@ export class FreeBoardService {
   }
 
   /**
-   * @param CreateFreeBoardDto
+   * @param id number
    *
    * @code writer 김현균
    * @description 자유게시판 조회 API
@@ -59,12 +58,13 @@ export class FreeBoardService {
   }
 
   /**
+   * @param id number
    * @param EditFreeBoardDto
    *
    * @code writer 김현균
    * @description 자유게시판 수정 API
    *
-   * @returns FreeBoardDto
+   * @return FreeBoardDto
    */
   async editFreeBoardById(id: number, editFreeBoardDto: EditFreeBoardDto) {
     // [x] Not found 예외처리
@@ -77,9 +77,13 @@ export class FreeBoardService {
     if (editFreeBoardDto.title || editFreeBoardDto.description) {
       await this.freeBoardRepository.update({ id }, editFreeBoardDto);
     }
+    const freeBoard = await this.freeBoardRepository.findOneBy({ id });
+    return new FreeBoardDto(freeBoard);
   }
 
   /**
+   * @param id number
+   *
    * @code writer 김현균
    * @description 자유게시판 삭제 API
    */

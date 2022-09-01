@@ -34,7 +34,7 @@ export class FreeBoardController {
    *
    * @POST ("/free-board")
    *
-   * @returns null
+   * @returns json
    */
   @Post()
   @ApiOperation(FreeBoardAPIDocs.CreateOperation())
@@ -80,10 +80,12 @@ export class FreeBoardController {
    * @description 자유게시판 수정 API
    *
    * @PATCH ("/free-board/1")
+   *
+   * @returns json
    */
   @Patch(':id')
   @ApiOperation(FreeBoardAPIDocs.EditOperation())
-  @ApiOkResponse(FreeBoardAPIDocs.OkResponse())
+  @ApiOkResponse(FreeBoardAPIDocs.EditOkResponse())
   @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
   async editFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
