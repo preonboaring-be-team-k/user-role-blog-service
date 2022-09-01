@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  ParseIntPipe,
-  Post,
-  Query,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -21,7 +11,6 @@ import { User } from './decorator/user.decorator';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
-import { UserEntity } from './entities/user.entity';
 import { LocalAuthGuard } from './guard/local.guard';
 import { UserService } from './user.service';
 
@@ -50,9 +39,11 @@ export class UserController {
 
   // 회원탈퇴
   @ApiOperation(UserAPIDocs.deleteUserOperation())
+  @ApiResponse(UserAPIDocs.deleteUserResponse())
+  @ApiUnauthorizedResponse(UserAPIDocs.deleteUserUnauthorizedResponse())
   @UseGuards(LocalAuthGuard)
   @Delete('/')
-  deleteUser(@Query('id', ParseIntPipe) id: number) {
-    return this.userService.deleteUserByEmail(id);
+  deleteUser(@User() user) {
+    return this.userService.deleteUserByEmail(user.id);
   }
 }

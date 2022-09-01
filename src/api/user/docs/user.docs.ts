@@ -79,23 +79,11 @@ export class UserAPIDocs {
     };
   }
 
-  static loginResponse2() {
+  static deleteUserResponse() {
     return {
-      description: '로그인 성공 응답값입니다.',
-      status: 400,
-      schema: {
-        example: {
-          id: 4,
-          email: 'seastory624@gmail.com',
-          name: '장성우',
-          gender: '남자',
-          age: 27,
-          role: 'CUSTOMER',
-          status: 'ACTIVE',
-          createAt: '2022-09-01T01:24:07.000Z',
-          deleteAt: null,
-        },
-      },
+      description: '회원정보 삭제 성공 응답값입니다.',
+      status: 200,
+      schema: { example: { success: true } },
     };
   }
 
@@ -103,6 +91,20 @@ export class UserAPIDocs {
     return {
       summary: '회원탈퇴 API',
       description: '웨인힐스벤처스에 회원정보를 삭제합니다.',
+    };
+  }
+
+  static deleteUserUnauthorizedResponse() {
+    return {
+      description: '권한이 없다던지 이미 없는 계정일 경우',
+      status: 401,
+      schema: {
+        example: {
+          statusCode: 401,
+          message: '존재하지 않는 계정입니다.',
+          error: 'Unauthorized',
+        },
+      },
     };
   }
 }

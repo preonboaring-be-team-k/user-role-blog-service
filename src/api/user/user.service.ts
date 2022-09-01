@@ -62,7 +62,7 @@ export class UserService {
     const found = await this.userRepository.findOne({ where: { id } });
     found.deleteAt = new Date();
     found.status = Status.STOP;
-    const result = await this.userRepository.save(found);
-    return result;
+    await this.userRepository.save(found);
+    return { success: true };
   }
 }
