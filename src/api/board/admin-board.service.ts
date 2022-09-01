@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BoardResponseDto } from "./dtos/boardResponse.dto";
@@ -21,5 +21,16 @@ export class AdminBoardService {
         const boards: AdminBoard[] = await this.adminBoardRepository.find();
         return boards.filter(board => !board.isDeleted)
             .map(board => BoardResponseDto.of(board));
+    }
+
+    async retrieveBoard(id: number): Promise<BoardResponseDto> {
+        const board: AdminBoard = await this.adminBoardRepository.findOne({
+            where: { id }
+        });
+        if (!board || board.isDeleted) {
+            throw new NotFoundException('존재하지 않은 게시물입니다.');
+        }
+
+        return BoardResponseDto.of(board);
     }
 }
