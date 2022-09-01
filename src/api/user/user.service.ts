@@ -41,11 +41,10 @@ export class UserService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userRepository.findOne({ where: { email } });
-
     if (user && (await bcrypt.compare(password, user.password))) {
       delete user.password;
       return user;
-    } else throw new UnauthorizedException('비밀번호가 틀립니다.');
+    } else throw new UnauthorizedException('회원정보가 틀립니다.');
   }
 
   async login(user) {
