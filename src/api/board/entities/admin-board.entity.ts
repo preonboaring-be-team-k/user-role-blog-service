@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UpdateBoardDto } from "../dtos/updateBoard.dto";
 
 @Entity()
 export class AdminBoard {
@@ -27,5 +28,11 @@ export class AdminBoard {
         this.title = title;
         this.discription = discription;
         this.isDeleted = false;
+    }
+
+    public update(updateBoardDto: UpdateBoardDto):AdminBoard {
+        this.title = updateBoardDto.title;
+        this.discription = updateBoardDto.discription;
+        return this;
     }
 }
