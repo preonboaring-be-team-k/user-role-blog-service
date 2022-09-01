@@ -25,33 +25,29 @@ export class AdminBoardService {
     }
 
     async retrieveBoard(id: number): Promise<BoardResponseDto> {
-        const board: AdminBoard = await this.adminBoardRepository.findOne({
-            where: { id }
-        });
-        if (!board || board.isDeleted) {
-            throw new NotFoundException('존재하지 않은 게시물입니다.');
-        }
-
+        const board: AdminBoard = await this.findById(id);
         return BoardResponseDto.of(board);
     }
 
     async editBoard(id:number,updateBoardDto: UpdateBoardDto) {
-        const board: AdminBoard = await this.adminBoardRepository.findOne({
+        const board: AdminBoard = await this.findById(id);
+        return await this.adminBoardRepository.save(board.update(updateBoardDto));
+    }
+
+    async removeBoard(id: number) {
+        const board: AdminBoard = await this.findById(id);
+
+        board.delete();
+        return await this.adminBoardRepository.save(board);
+    }
+
+    private async findById(id:number) {
+        const board:AdminBoard = await this.adminBoardRepository.findOne({
             where: { id }
         });
         if (!board || board.isDeleted) {
             throw new NotFoundException('존재하지 않은 게시물입니다.');
         }
-       
-        return await this.adminBoardRepository.save(board.update(updateBoardDto));
-    }
-
-    async removeBoard(id: number) {
-        const board: AdminBoard = await this.adminBoardRepository.findOne({
-            where: { id }
-        });
-
-        board.delete();
-        return await this.adminBoardRepository.save(board);
+        return board;
     }
 }
