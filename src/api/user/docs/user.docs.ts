@@ -13,8 +13,6 @@ export class UserAPIDocs {
         example: {
           email: 'seastory624@gmail.com',
           name: '장성우',
-          password:
-            '$2a$10$5n4IMeRggJi8WkhyngzP0e.C0lf3A78iwmKX0BaWsLvK4g9DkFwQW',
           gender: '남자',
           age: 27,
           deleteAt: null,

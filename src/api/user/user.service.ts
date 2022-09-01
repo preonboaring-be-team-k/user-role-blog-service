@@ -35,7 +35,7 @@ export class UserService {
       gender,
     });
     const result = await this.userRepository.save(user);
-
+    delete result.password;
     return result;
   }
 
