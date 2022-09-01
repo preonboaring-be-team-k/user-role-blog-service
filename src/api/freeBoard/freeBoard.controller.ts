@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -56,11 +57,9 @@ export class FreeBoardController {
 
   /**
    * @code writer 김현균
-   * @description 자유게시판 조회 API
+   * @description 자유게시판 수정 API
    *
    * @PATCH ("/free-board/1")
-   *
-   * @returns json
    */
   @Patch(':id')
   async editFreeBoardById(
