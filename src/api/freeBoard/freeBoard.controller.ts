@@ -9,10 +9,21 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
+@ApiTags('자유게시판')
 @Controller('free-board')
 export class FreeBoardController {
   constructor(private readonly freeBoardService: FreeBoardService) {}
@@ -26,6 +37,9 @@ export class FreeBoardController {
    * @returns null
    */
   @Post()
+  @ApiOperation(FreeBoardAPIDocs.CreateOperation())
+  @ApiCreatedResponse(FreeBoardAPIDocs.CreateCreatedResponse())
+  @ApiBadRequestResponse(FreeBoardAPIDocs.BadRequestResponse())
   async createFreeBoard(@Body() createFreeBoardDto: CreateFreeBoardDto) {
     return this.freeBoardService.createFreeBoard(createFreeBoardDto);
   }
@@ -39,6 +53,8 @@ export class FreeBoardController {
    * @returns json
    */
   @Get()
+  @ApiOperation(FreeBoardAPIDocs.GetListOperation())
+  @ApiOkResponse(FreeBoardAPIDocs.GetListOkResponse())
   async getFreeBoards() {
     return this.freeBoardService.getFreeBoards();
   }
@@ -52,6 +68,9 @@ export class FreeBoardController {
    * @returns json
    */
   @Get(':id')
+  @ApiOperation(FreeBoardAPIDocs.GetByIdOperation())
+  @ApiOkResponse(FreeBoardAPIDocs.GetByIdOkResponse())
+  @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
   async getFreeBoardById(@Param('id', ParseIntPipe) id: number) {
     return this.freeBoardService.getFreeBoardById(id);
   }
@@ -63,6 +82,9 @@ export class FreeBoardController {
    * @PATCH ("/free-board/1")
    */
   @Patch(':id')
+  @ApiOperation(FreeBoardAPIDocs.EditOperation())
+  @ApiOkResponse(FreeBoardAPIDocs.OkResponse())
+  @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
   async editFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
     @Body() editFreeBoardDto: EditFreeBoardDto,
@@ -78,6 +100,9 @@ export class FreeBoardController {
    */
   @Delete(':id')
   @HttpCode(204)
+  @ApiOperation(FreeBoardAPIDocs.DeleteByIdOperation())
+  @ApiNoContentResponse(FreeBoardAPIDocs.NoContentResponse())
+  @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
   async deleteFreeBoardById(@Param('id', ParseIntPipe) id: number) {
     return this.freeBoardService.deleteFreeBoardById(id);
   }

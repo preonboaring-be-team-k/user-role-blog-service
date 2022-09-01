@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
   BaseEntity,
@@ -18,15 +19,29 @@ import {
   name: 'FREEBOARD',
 })
 export class FreeBoardEntity extends BaseEntity {
+  @ApiProperty({
+    example: '1',
+  })
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @ApiProperty({
+    example: '제목입니다.',
+    required: true,
+  })
   @Column({ type: 'text', nullable: false, comment: '제목' })
   title: string;
 
+  @ApiProperty({
+    example: '본문입니다.',
+    required: true,
+  })
   @Column({ type: 'text', nullable: false, comment: '본문' })
   description: string;
 
+  @ApiProperty({
+    example: '2022-09-01T01:27:39.000Z',
+  })
   @CreateDateColumn({ type: 'datetime', comment: '생성일' })
   createAt: Date;
 
