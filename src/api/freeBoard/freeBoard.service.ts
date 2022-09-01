@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { FreeBoardDto } from './dtos/freeBoard.dto';
+import { FreeBoardListDto } from './dtos/freeBoardList.dto';
 import { FreeBoardEntity } from './entities/freeBoard.entity';
 
 @Injectable()
@@ -31,11 +32,11 @@ export class FreeBoardService {
    * @code writer 김현균
    * @description 자유게시판 리스트 조회 API
    *
-   * @returns FreeBoardDto
+   * @returns FreeBoardListDto
    */
   async getFreeBoards() {
     const freeBoards = await this.freeBoardRepository.find();
-    return freeBoards.map((freeBoard) => new FreeBoardDto(freeBoard));
+    return freeBoards.map((freeBoard) => new FreeBoardListDto(freeBoard));
   }
 
   /**
