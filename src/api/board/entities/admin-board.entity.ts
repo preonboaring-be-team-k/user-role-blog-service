@@ -23,5 +23,9 @@ export class AdminBoard {
     @Column()
     isDeleted: boolean;
 
-
+    constructor(title: string, discription: string) {
+        this.title = title;
+        this.discription = discription;
+        this.isDeleted = false;
+    }
 }
