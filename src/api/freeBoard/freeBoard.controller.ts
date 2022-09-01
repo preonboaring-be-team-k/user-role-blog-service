@@ -4,9 +4,11 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
+import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
 @Controller('free-board')
@@ -50,5 +52,21 @@ export class FreeBoardController {
   @Get(':id')
   async getFreeBoardById(@Param('id', ParseIntPipe) id: number) {
     return this.freeBoardService.getFreeBoardById(id);
+  }
+
+  /**
+   * @code writer 김현균
+   * @description 자유게시판 조회 API
+   *
+   * @PATCH ("/free-board/1")
+   *
+   * @returns json
+   */
+  @Patch(':id')
+  async editFreeBoardById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() editFreeBoardDto: EditFreeBoardDto,
+  ) {
+    return this.freeBoardService.editFreeBoardById(id, editFreeBoardDto);
   }
 }
