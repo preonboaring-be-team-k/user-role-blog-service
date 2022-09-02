@@ -10,12 +10,14 @@ import { UserEntity } from './entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { Status } from './entities/status.enum';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    private readonly authService: AuthService,
   ) {}
 
   async signup(createUserDto: CreateUserDto) {
@@ -48,7 +50,8 @@ export class UserService {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       delete user.password;
-      return user;
+      const token = await this.authService.generateAccessToken(user);
+      return { user, token };
     } else throw new UnauthorizedException('비밀번호가 틀립니다.');
   }
 
