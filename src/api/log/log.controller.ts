@@ -30,11 +30,15 @@ export class LogController {
     description: '성공',
   })
   @ApiResponse({
-    status: 402,
+    status: 401,
     description: '접근 불가능한 권한입니다.',
   })
   @ApiResponse({
     status: 400,
+    description: '잘못된 값입니다.',
+  })
+  @ApiResponse({
+    status: 500,
     description: '서버 에러',
   })
   @ApiQuery({ name: 'status', enum: Status, required: false })

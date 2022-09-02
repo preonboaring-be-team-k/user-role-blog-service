@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Gender, PAGE_SIZE, Sort, Status } from './entity/variables.util';
 import { Log } from './entity/log.entity';
 import { User } from '../user/entities/user.entity';
+import { makeResponse } from '../../config/function.utils';
+import { response } from '../../config/response.utils';
 
 @Injectable()
 export class LogService {
   constructor(private dataSource: DataSource) {}
+
   async retrieveLogs(request: any) {
     try {
       let logs = [];
@@ -76,10 +79,12 @@ export class LogService {
         log: logs,
       };
 
-      return data;
+      const result = makeResponse(response.SUCCESS, data);
+
+      return result;
     } catch (error) {
       console.log(error);
-      return error;
+      return response.ERROR;
     }
   }
 }
