@@ -1,9 +1,11 @@
+import { FreeBoardEntity } from '../../freeBoard/entities/freeBoard.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Role } from './role.enum';
@@ -74,4 +76,11 @@ export class UserEntity {
   })
   @DeleteDateColumn()
   deleteAt: Date;
+
+  // 자유게시판 Relation
+  @OneToMany(
+    () => FreeBoardEntity,
+    (freeBoard: FreeBoardEntity) => freeBoard.author,
+  )
+  freeBoards: FreeBoardEntity[];
 }
