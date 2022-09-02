@@ -5,14 +5,9 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  // async validateUser(username: string, password: string): Promise<any> {
-  //   return await this.userService.validateUser(username, password);
-  // }
-
-  async login(user) {
+  async generateAccessToken(user) {
     const payload = { username: user.name, sub: user.id };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    const token = this.jwtService.sign(payload);
+    return token;
   }
 }

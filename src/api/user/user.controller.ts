@@ -8,7 +8,6 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { User } from './decorator/user.decorator';
-import { AuthService } from '../auth/auth.service';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
@@ -18,10 +17,7 @@ import { UserService } from './user.service';
 @ApiTags('User API')
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   // 회원가입
   @ApiOperation(UserAPIDocs.signUpOperation())
