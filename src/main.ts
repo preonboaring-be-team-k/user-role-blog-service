@@ -15,6 +15,17 @@ async function bootstrap() {
         .setTitle('기업과제 - 웨인힐스벤처스')
         .setDescription('Wanted PreOnboarding - Team K')
         .setVersion('1.0')
+        .addBearerAuth(
+          {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+            name: 'JWT',
+            description: 'JWT Token',
+            in: 'header',
+          },
+          'Access Token',
+        )
         .build(),
     ),
   );
