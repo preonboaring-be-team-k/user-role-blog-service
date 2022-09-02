@@ -13,8 +13,6 @@ export class UserAPIDocs {
         example: {
           email: 'seastory624@gmail.com',
           name: '장성우',
-          password:
-            '$2a$10$5n4IMeRggJi8WkhyngzP0e.C0lf3A78iwmKX0BaWsLvK4g9DkFwQW',
           gender: '남자',
           age: 27,
           deleteAt: null,
@@ -49,12 +47,12 @@ export class UserAPIDocs {
 
   static loginUnauthorizedResponse() {
     return {
+      description: '이메일 또는 비밀번호 가 틀린 경우.',
       status: 401,
-      description: '실패',
       schema: {
         example: {
           statusCode: 401,
-          message: '회원정보가 틀립니다.',
+          message: '비밀번호가 틀립니다.',
           error: 'Unauthorized',
         },
       },
@@ -81,10 +79,32 @@ export class UserAPIDocs {
     };
   }
 
+  static deleteUserResponse() {
+    return {
+      description: '회원정보 삭제 성공 응답값입니다.',
+      status: 200,
+      schema: { example: { success: true } },
+    };
+  }
+
   static deleteUserOperation() {
     return {
       summary: '회원탈퇴 API',
       description: '웨인힐스벤처스에 회원정보를 삭제합니다.',
+    };
+  }
+
+  static deleteUserUnauthorizedResponse() {
+    return {
+      description: '권한이 없다던지 이미 없는 계정일 경우',
+      status: 401,
+      schema: {
+        example: {
+          statusCode: 401,
+          message: '존재하지 않는 계정입니다.',
+          error: 'Unauthorized',
+        },
+      },
     };
   }
 }
