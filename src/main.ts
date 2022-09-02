@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -12,6 +13,9 @@ async function bootstrap() {
 
   // Response Interceptor
   app.useGlobalInterceptors(new ResponseInterceptor());
+
+  // class-validation
+  app.useGlobalPipes(new ValidationPipe());
 
   // Swagger
   SwaggerModule.setup(
