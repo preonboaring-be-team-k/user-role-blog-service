@@ -7,18 +7,23 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guard/auth.guard';
 import { AdminBoardService } from './admin-board.service';
 import { BoardResponseDto } from './dtos/boardResponse.dto';
 import { CreateBoardDto } from './dtos/createBoard.dto';
 import { UpdateBoardDto } from './dtos/updateBoard.dto';
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('Access Token')
 @Controller('admin/board')
 @ApiTags('운영진 게시판 API')
 export class AdminBoardController {
