@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { PAGE_SIZE, Sort, Status } from './entity/variables.util';
+import { Gender, PAGE_SIZE, Sort, Status } from './entity/variables.util';
 import { Log } from './entity/log.entity';
 import { User } from '../user/entities/user.entity';
 
@@ -12,9 +12,9 @@ export class LogService {
       let logs = [];
 
       // query 생성
-      const queryResult = this.dataSource.createQueryBuilder(User, 'user');
+      const queryResult = this.dataSource.createQueryBuilder(Log, 'log');
 
-      queryResult.leftJoin(Log, 'log', 'user.id = log.userId');
+      queryResult.leftJoin(User, 'user', 'user.id = log.userId');
 
       // 상태 필터
       if (request.query.status == Status.ACTIVE) {
@@ -27,6 +27,17 @@ export class LogService {
         });
       }
 
+      // 성별 필터
+      if (request.query.gender == Gender.MAN) {
+        await queryResult.andWhere('user.gender IN (:gender)', {
+          gender: Gender.MAN,
+        });
+      } else if (request.query.gender == Gender.WOMAN) {
+        await queryResult.andWhere('user.gender IN (:gender)', {
+          gender: Gender.WOMAN,
+        });
+      }
+
       // 날짜순 내림차순, 오름차순 정렬
       if (request.query.sort == Sort.DESC) {
         await queryResult.orderBy('user.createAt', 'DESC');
@@ -34,15 +45,17 @@ export class LogService {
         await queryResult.orderBy('user.createAt', 'ASC');
       }
 
-      await queryResult.select([
-        'user.id',
-        'user.name',
-        'user.createAt',
-        'user.status',
-        'user.gender',
-        'user.role',
-        'user.age',
-      ]);
+      await queryResult
+        .select(['log.createdAt as accessAt'])
+        .addSelect([
+          'user.id as id',
+          'user.name as name',
+          'user.createAt as creatAt',
+          'user.status as status',
+          'user.gender as gender',
+          'user.role as role',
+          'user.age as age',
+        ]);
 
       let page = 0;
       // 페이징;
@@ -57,7 +70,7 @@ export class LogService {
       }
 
       // 조회
-      logs = await queryResult.getMany();
+      logs = await queryResult.getRawMany();
 
       const data = {
         log: logs,
