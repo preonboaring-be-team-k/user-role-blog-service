@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from '../user/entities/user.entity';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardDto } from './dtos/freeBoard.dto';
@@ -12,6 +13,8 @@ export class FreeBoardService {
   constructor(
     @InjectRepository(FreeBoardEntity)
     private readonly freeBoardRepository: Repository<FreeBoardEntity>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   /**
@@ -23,7 +26,14 @@ export class FreeBoardService {
    * @return FreeBoardDto
    */
   async createFreeBoard(createFreeBoardDto: CreateFreeBoardDto) {
+    // [x] User 정보 가져오기
+    const user = await this.userRepository.findOneBy({
+      id: createFreeBoardDto.userId,
+    });
+
     const newFreeBoard = this.freeBoardRepository.create(createFreeBoardDto);
+    newFreeBoard.author = user;
+
     await this.freeBoardRepository.save(newFreeBoard);
     return new FreeBoardDto(newFreeBoard);
   }
@@ -53,7 +63,11 @@ export class FreeBoardService {
       throw new HttpException('Not found', 404);
     }
 
-    const freeBoard = await this.freeBoardRepository.findOneBy({ id });
+    // const freeBoard = await this.freeBoardRepository.findOneBy({ id });
+    const freeBoard = await this.freeBoardRepository.findOne({
+      where: { id },
+      relations: ['author'],
+    });
     return new FreeBoardDto(freeBoard);
   }
 
