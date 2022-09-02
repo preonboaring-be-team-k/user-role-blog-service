@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -85,7 +84,7 @@ export class AdminBoardController {
     summary: '운영진 게시물 삭제 API',
     description: '운영진이 게시물을 삭제한다.',
   })
-  @ApiOkResponse({
+  @ApiResponse({
     status: HttpStatus.OK,
   })
   deleteBoard(@Param('id') id: number) {
