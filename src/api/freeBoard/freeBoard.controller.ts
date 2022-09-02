@@ -8,9 +8,11 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -18,11 +20,14 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guard/auth.guard';
 import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('Access Token')
 @ApiTags('자유게시판')
 @Controller('free-board')
 export class FreeBoardController {
