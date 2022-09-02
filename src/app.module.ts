@@ -9,10 +9,11 @@ import { BoardModule } from './api/board/admin-board.module';
 import { NoticeModule } from './api/notice/notice.module';
 import { FreeBoardModule } from './api/freeBoard/freeBoard.module';
 import { AuthModule } from './api/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './api/auth/guard/role.guard';
 
 @Module({
   imports: [
-    
     ConfigModule.forRoot({
       envFilePath: '.development.env',
       isGlobal: true,
@@ -21,11 +22,16 @@ import { AuthModule } from './api/auth/auth.module';
     BoardModule,
     NoticeModule,
     FreeBoardModule,
-   
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmAsyncModuleOptions),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
