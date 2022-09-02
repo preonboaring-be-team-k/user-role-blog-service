@@ -17,7 +17,7 @@ export class NoticeController {
      * @param description 게시글 본문
      * @returns 생성한 Notice object
      */
-    @Post('create')
+    @Post()
     @ApiCreatedResponse({type: Notice})
     async create(
         @Body() input: NoticeInput
@@ -32,7 +32,7 @@ export class NoticeController {
      * @param description 게시글 본문
      * @returns 생성한 Notice 객체
      */
-    @Put('/updateById/:id')
+    @Put(':id')
     @ApiCreatedResponse({type: Notice})
     async update(
         @Param('id') id: string,
@@ -46,7 +46,7 @@ export class NoticeController {
      * @param id 삭제할 게시글 id
      * @returns '게시글 삭제'
      */
-    @Delete('/deleteById/:id')
+    @Delete(':id')
     @ApiOkResponse({type: String})
     async delete(
         @Param('id') id: string,
@@ -58,7 +58,7 @@ export class NoticeController {
      * 게시글 전체 조회
      * @returns Notice 객체의 배열
      */
-    @Get('getNotice')
+    @Get()
     @ApiOkResponse({type: [Notice]})
     async find(){
         return await this.noticeService.find()
@@ -69,7 +69,7 @@ export class NoticeController {
      * @param id 조회할 게시글 id
      * @returns Notice 객체
      */
-    @Get('/getNoticeById/:id')
+    @Get(':id')
     @ApiOkResponse({type: Notice})
     async findOne(
         @Param('id') id: string
