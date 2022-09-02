@@ -11,7 +11,10 @@ export class NoticeService {
     ){}
 
     async create(input){
-        return await this.noticeRepository.save({...input})
+        return await this.noticeRepository.save({
+            ...input,
+            // user: id
+        })
     }
 
     async update(id, input){

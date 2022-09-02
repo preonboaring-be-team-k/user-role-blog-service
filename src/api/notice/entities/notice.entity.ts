@@ -1,3 +1,4 @@
+import { User } from "../../user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -7,13 +8,13 @@ export class Notice {
 
     @Column()
     title: string
-
+          
     @Column()
     description: string
 
     @CreateDateColumn()
     createAt: Date
     
-    // @ManyToOne(() => User, {eager:true})
-    // user: User
+    @ManyToOne(() => User, { eager: true })
+    user: User
 }
