@@ -11,12 +11,17 @@ import { FreeBoardModule } from './api/freeBoard/freeBoard.module';
 import { AuthModule } from './api/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './api/auth/guard/role.guard';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.development.env',
       isGlobal: true,
+      validationSchema: Joi.object({
+        JWT_SECRET_KEY: Joi.string().required(),
+        JWT_EXPIRESIN: Joi.number().required(),
+      }),
     }),
     UserModule,
     BoardModule,
