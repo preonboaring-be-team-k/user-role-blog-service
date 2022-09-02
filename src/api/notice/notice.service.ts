@@ -5,10 +5,10 @@ import { Notice } from './entities/notice.entity';
 
 @Injectable()
 export class NoticeService {
-    constructor(
-        @InjectRepository(Notice)
-        private readonly noticeRepository: Repository<Notice>,
-    ){}
+  constructor(
+    @InjectRepository(Notice)
+    private readonly noticeRepository: Repository<Notice>,
+  ) {}
 
     async create(input){
       return await this.noticeRepository.save({
@@ -37,6 +37,7 @@ export class NoticeService {
         throw new HttpException('', 204)
       }
     }
+  }
 
     async find(){
       return await this.noticeRepository.find()

@@ -8,9 +8,7 @@ import { NoticeService } from "./notice.service";
 @Controller('notice')
 @ApiTags('notice')
 export class NoticeController {
-    constructor(
-        private readonly noticeService: NoticeService
-    ){}
+  constructor(private readonly noticeService: NoticeService) {}
 
     /**
      * 공지 생성
