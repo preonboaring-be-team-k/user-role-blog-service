@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
-import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { JwtAuthGuard } from "../auth/guard/auth.guard";
 import { NoticeAPIDocs } from "./docs/notice.docs";
 import { NoticeInput } from "./dtos/notice.dto";
 import { Notice } from "./entities/notice.entity";
 import { NoticeService } from "./notice.service";
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('Access Token')
 @Controller('notice')
 @ApiTags('notice')
 export class NoticeController {
