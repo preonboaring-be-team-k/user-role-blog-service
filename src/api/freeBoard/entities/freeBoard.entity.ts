@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { User } from '../../user/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -49,13 +50,10 @@ export class FreeBoardEntity extends BaseEntity {
   @DeleteDateColumn({ type: 'datetime', comment: '삭제일' })
   deleteAt: Date;
 
-  // UserEntity 생성 후 연결
-  // @ManyToOne(() => UserEntity, (user: UserEntity) => user.freeBoards, {
-  //   onDelete: 'NO ACTION',
-  // })
-  // @JoinColumn({
-  //   name: 'user_id',
-  //   referencedColumnName: 'id',
-  // })
-  // user: UserEntity;
+  @ManyToOne(() => User, (user: User) => user.freeBoards)
+  @JoinColumn({
+    name: 'user_id',
+    referencedColumnName: 'id',
+  })
+  author: User;
 }

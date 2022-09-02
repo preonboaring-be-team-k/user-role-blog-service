@@ -1,8 +1,10 @@
+import { FreeBoardEntity } from '../../freeBoard/entities/freeBoard.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Role } from './role.enum';
@@ -39,4 +41,11 @@ export class User {
 
   @DeleteDateColumn()
   deleteAt: Date;
+
+  // 자유게시판 Relation
+  @OneToMany(
+    () => FreeBoardEntity,
+    (freeBoard: FreeBoardEntity) => freeBoard.author,
+  )
+  freeBoards: FreeBoardEntity[];
 }
