@@ -1,4 +1,4 @@
-import { HttpCode, HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notice } from './entities/notice.entity';
@@ -37,7 +37,6 @@ export class NoticeService {
         throw new HttpException('', 204)
       }
     }
-  }
 
     async find(){
       return await this.noticeRepository.find()

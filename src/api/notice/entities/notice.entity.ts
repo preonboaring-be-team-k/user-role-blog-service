@@ -1,4 +1,4 @@
-import { User } from "../../user/entities/user.entity";
+import { UserEntity } from "../../user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -21,6 +21,6 @@ export class Notice {
     createAt: Date
     
     @ApiProperty({ description: '작성자' })
-    @ManyToOne(() => User, { eager: true })
-    user: User
+    @ManyToOne(() => UserEntity, { eager: true })
+    user: UserEntity
 }
