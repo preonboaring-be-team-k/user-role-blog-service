@@ -1,15 +1,12 @@
-import {
-  Controller,
-  Get,
-  Request
-} from '@nestjs/common';
+import { Controller, Get, Request } from '@nestjs/common';
 import {
   ApiHeader,
   ApiOperation,
   ApiQuery,
   ApiResponse,
 } from '@nestjs/swagger';
-import {Gender, SearchType, Sort, Status} from './entity/variables.util';
+import { GetLogsResponse } from './dto/getLogs.response';
+import { Gender, SearchType, Sort, Status } from './entity/variables.util';
 import { LogService } from './log.service';
 
 @Controller('log')
@@ -28,6 +25,7 @@ export class LogController {
   @ApiResponse({
     status: 200,
     description: '성공',
+    type: GetLogsResponse,
   })
   @ApiResponse({
     status: 401,
