@@ -1,34 +1,26 @@
-import {
-  Injectable,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, ExecutionContext, HttpException, ForbiddenException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JWTAuthGuard extends AuthGuard('jwt') {
   constructor(
-    private configService: ConfigService,
-    private jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
+    private readonly reflector: Reflector,
   ) {
     super();
   }
 
-  canActivate(context: ExecutionContext) {
-    const request = context.switchToHttp().getRequest();
-
-    const { authorization } = request.headers;
-
-    if (authorization === undefined) {
-      throw new HttpException('No Token', HttpStatus.UNAUTHORIZED);
+  canActivate(context: ExecutionContext): boolean {
+    const req = context.switchToHttp().getRequest();
+    const token = req.headers.authorization.split(' ')[1];
+    req.user = this.validateToken(token);
+    if (!req.user) {
+      throw new ForbiddenException('존재하지 않는 사용자입니다.');
     }
-
-    const token = authorization.replace('Bearer ', '');
-    request.user = this.validateToken(token);
     return true;
   }
 
@@ -41,7 +33,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       const verify = this.jwtService.verify(token, { secret: secretKey });
       return verify;
     } catch (e) {
-      Logger.debug(`에러 메시지: ${e}`);
       switch (e.name) {
         case 'JsonWebTokenError':
           throw new HttpException('유효하지 않은 토큰', 401);
