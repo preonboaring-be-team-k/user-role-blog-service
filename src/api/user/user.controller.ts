@@ -19,7 +19,15 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // 회원가입
+  /**
+   * 회원가입
+   * @param email 이메일
+   * @param name 사용자 이름
+   * @param password 계정 비밀번호
+   * @param age 사용자 나이
+   * @param gender 사용자 성별
+   * @returns 생성된 계정 정보(비밀번호 제외)
+   * */
   @ApiOperation(UserAPIDocs.signUpOperation())
   @ApiConflictResponse(UserAPIDocs.signUpConflictResponse())
   @ApiCreatedResponse(UserAPIDocs.signUpCreatedResponse())
@@ -28,7 +36,12 @@ export class UserController {
     return this.userService.signup(createUserDto);
   }
 
-  // 로그인
+  /**
+   * 로그인
+   * @param email 이메일
+   * @param password 계정 비밀번호
+   * @returns 입력된 계정 정보(비밀번호 제외)
+   * */
   @ApiOperation(UserAPIDocs.loginOperation())
   @ApiResponse(UserAPIDocs.loginResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.loginUnauthorizedResponse())
@@ -37,7 +50,11 @@ export class UserController {
     return this.userService.login(loginRequestDto);
   }
 
-  // 회원탈퇴
+  /**
+   * 회원탈퇴
+   * @param id 유저 id
+   * @returns 성공여부
+   * */
   @ApiOperation(UserAPIDocs.deleteUserOperation())
   @ApiResponse(UserAPIDocs.deleteUserResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.deleteUserUnauthorizedResponse())
