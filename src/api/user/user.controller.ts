@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Res, UseGuards } from '@nestjs/common';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -11,13 +11,18 @@ import { User } from '../auth/decorator/user.decorator';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
-import { LocalAuthGuard } from '../auth/guard/local.guard';
 import { UserService } from './user.service';
+import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/guard/auth.guard';
+import { Response } from 'express';
 
 @ApiTags('User API')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   /**
    * 회원가입
@@ -46,8 +51,16 @@ export class UserController {
   @ApiResponse(UserAPIDocs.loginResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.loginUnauthorizedResponse())
   @Post('/login')
-  login(@Body() loginRequestDto: LoginRequestDto) {
-    return this.userService.login(loginRequestDto);
+  async login(
+    @Res({ passthrough: true }) res: Response,
+    @Body() loginRequestDto: LoginRequestDto,
+  ) {
+    const access_token = await this.authService.login(
+      loginRequestDto.email,
+      loginRequestDto.password,
+    );
+
+    return res.set({ access_token }).json({ success: true });
   }
 
   /**
@@ -58,7 +71,7 @@ export class UserController {
   @ApiOperation(UserAPIDocs.deleteUserOperation())
   @ApiResponse(UserAPIDocs.deleteUserResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.deleteUserUnauthorizedResponse())
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete('/')
   deleteUser(@User() user) {
     return this.userService.deleteUserByEmail(user.id);
