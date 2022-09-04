@@ -7,11 +7,11 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { User } from './decorator/user.decorator';
+import { User } from '../auth/decorator/user.decorator';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
-import { LocalAuthGuard } from './guard/local.guard';
+import { LocalAuthGuard } from '../auth/guard/local.guard';
 import { UserService } from './user.service';
 
 @ApiTags('User API')

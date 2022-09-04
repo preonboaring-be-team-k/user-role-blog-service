@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from '../auth/auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserEntity } from './entities/user.entity';
-import { LocalStrategy } from './strategy/local.strategy';
+import { LocalStrategy } from '../auth/strategy/local.strategy';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
