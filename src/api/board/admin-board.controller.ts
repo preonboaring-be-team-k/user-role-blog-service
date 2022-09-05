@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -18,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { User } from '../user/decorator/user.decorator';
 import { Role } from '../user/entities/role.enum';
 import { AdminBoardService } from './admin-board.service';
 import { BoardResponseDto } from './dtos/boardResponse.dto';
@@ -41,8 +43,12 @@ export class AdminBoardController {
     status: HttpStatus.CREATED,
     type: Number,
   })
-  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<number> {
-    return this.adminBoardService.createBoard(createBoardDto);
+  createBoard(
+    @Body() createBoardDto: CreateBoardDto,
+    @Req() req,
+  ): Promise<number> {
+    console.log('hello', req);
+    return this.adminBoardService.createBoard(createBoardDto, req.user.sub);
   }
 
   @Get()
@@ -83,8 +89,9 @@ export class AdminBoardController {
   updateBoard(
     @Param('id') id: number,
     @Body() updateBoardDto: UpdateBoardDto,
+    @Req() req,
   ): Promise<BoardResponseDto> {
-    return this.adminBoardService.editBoard(id, updateBoardDto);
+    return this.adminBoardService.editBoard(id, updateBoardDto, req.user.sub);
   }
 
   @Delete('/:id')
@@ -95,7 +102,7 @@ export class AdminBoardController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  deleteBoard(@Param('id') id: number) {
-    return this.adminBoardService.removeBoard(id);
+  deleteBoard(@Param('id') id: number, @Req() req) {
+    return this.adminBoardService.removeBoard(id, req.user.sub);
   }
 }
