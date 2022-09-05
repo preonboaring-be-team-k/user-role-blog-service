@@ -1,6 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ICurrentUser } from '../user/decorator/user.decorator';
+import { NoticeInput } from './dtos/notice.dto';
 import { Notice } from './entities/notice.entity';
 
 @Injectable()
@@ -10,16 +12,19 @@ export class NoticeService {
     private readonly noticeRepository: Repository<Notice>,
   ) {}
 
-    async create(input){
+    async create(input: NoticeInput, userId){
       return await this.noticeRepository.save({
           ...input,
-          // user: id
+          user: userId
       })
     }
 
-    async update(id, input){
+    async update(id: number, input: NoticeInput, userId: number){
       const PREV = await this.noticeRepository.findOneBy({id})
       if(PREV) {
+        if(PREV.user.id !== userId){
+          throw new HttpException('수정은 작성자만 가능합니다.', 422)
+        }
         return await this.noticeRepository.save({
           ...PREV,
           ...input
@@ -29,7 +34,11 @@ export class NoticeService {
       }
     }
 
-    async delete(id){        
+    async delete(id: number, userId){
+      const TARGET = await this.noticeRepository.findOneBy({id})
+      if(TARGET.user.id !== userId){
+        throw new HttpException('삭제는 작성자만 가능합니다.', 422)
+      }        
       const RESULT = await this.noticeRepository.delete({id})
       if(RESULT.affected) {
         return '게시글 삭제'

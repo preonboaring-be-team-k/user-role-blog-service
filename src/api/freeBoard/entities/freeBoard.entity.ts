@@ -17,7 +17,7 @@ import {
  * @description 자유게시판 Entity
  */
 @Entity({
-  name: 'FREEBOARD',
+  name: 'free_board',
 })
 export class FreeBoardEntity extends BaseEntity {
   @ApiProperty({
