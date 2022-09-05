@@ -1,6 +1,7 @@
 import { FreeBoardEntity } from '../../freeBoard/entities/freeBoard.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -10,10 +11,21 @@ import {
 } from 'typeorm';
 import { Role } from './role.enum';
 import { Status } from './status.enum';
+import {
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { Exclude } from 'class-transformer';
 import { AdminBoard } from '../../board/entities/admin-board.entity';
 
 @Entity('user')
-export class UserEntity {
+export class UserEntity extends BaseEntity {
   @ApiProperty({
     example: 1,
     description: 'id - 자동생성',
@@ -27,6 +39,8 @@ export class UserEntity {
     description: '이메일',
     required: true,
   })
+  @IsNotEmpty()
+  @IsEmail()
   @Column()
   email: string;
 
@@ -35,6 +49,10 @@ export class UserEntity {
   name: string;
 
   @ApiProperty({ example: 'Test123$', description: '비밀번호', required: true })
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  @MaxLength(20)
   @Column()
   password: string;
 
@@ -43,6 +61,7 @@ export class UserEntity {
   gender: string;
 
   @ApiProperty({ example: 27, description: '나이', required: true })
+  @IsNumber()
   @Column()
   age: number;
 
@@ -51,6 +70,7 @@ export class UserEntity {
     description: '사용자 등급',
     required: true,
   })
+  @IsEnum(Role)
   @Column({ default: Role.CUSTOMER })
   role: Role;
 
@@ -59,6 +79,7 @@ export class UserEntity {
     description: '활성 상태',
     required: true,
   })
+  @IsEnum(Status)
   @Column({ default: Status.ACTIVE })
   status: Status;
 
@@ -67,6 +88,7 @@ export class UserEntity {
     description: '계정 생성 날짜',
     required: true,
   })
+  @IsDate()
   @CreateDateColumn()
   createAt: Date;
 
@@ -75,6 +97,8 @@ export class UserEntity {
     description: '계정 비활성화 날짜',
     required: true,
   })
+  @IsDate()
+  @Exclude()
   @DeleteDateColumn()
   deleteAt: Date;
 

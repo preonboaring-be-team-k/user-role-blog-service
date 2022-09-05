@@ -1,3 +1,6 @@
+import { createResponseDto } from '../../../common/utils/responseDto.utils';
+import { CreateUserDto } from '../dtos/createUser.dto';
+
 export class UserAPIDocs {
   static signUpOperation() {
     return {
@@ -11,15 +14,20 @@ export class UserAPIDocs {
       description: '계정 생성 완료',
       schema: {
         example: {
-          email: 'seastory624@gmail.com',
-          name: '장성우',
-          gender: '남자',
-          age: 27,
-          deleteAt: null,
-          id: 3,
-          role: 'CUSTOMER',
-          status: 'ACTIVE',
-          createAt: '2022-09-01T00:13:42.000Z',
+          success: true,
+          timestamp: '2022-09-05T02:15:34.587Z',
+          message: 'Created',
+          data: {
+            email: 'seastory624@gmail.com',
+            name: '장성우',
+            gender: '남자',
+            age: 27,
+            deleteAt: null,
+            id: 7,
+            role: 'CUSTOMER',
+            status: 'ACTIVE',
+            createAt: '2022-09-05T02:15:34.000Z',
+          },
         },
       },
     };
@@ -30,9 +38,10 @@ export class UserAPIDocs {
       description: '이미 가입한 이메일',
       schema: {
         example: {
-          statusCode: 409,
-          message: '이미 가입한 이메일입니다. 다른 계정으로 회원가입 해주세요.',
-          error: 'Conflict',
+          success: false,
+          timestamp: '2022-09-05T02:33:19.470Z',
+          message: 'Conflict',
+          data: '이미 가입한 이메일입니다. 다른 계정으로 회원가입 해주세요.',
         },
       },
     };
@@ -51,9 +60,10 @@ export class UserAPIDocs {
       status: 401,
       schema: {
         example: {
-          statusCode: 401,
-          message: '비밀번호가 틀립니다.',
-          error: 'Unauthorized',
+          success: false,
+          timestamp: '2022-09-05T02:33:46.590Z',
+          message: 'Unauthorized',
+          data: '비밀번호가 틀립니다.',
         },
       },
     };
@@ -65,15 +75,24 @@ export class UserAPIDocs {
       status: 200,
       schema: {
         example: {
-          id: 4,
-          email: 'seastory624@gmail.com',
-          name: '장성우',
-          gender: '남자',
-          age: 27,
-          role: 'CUSTOMER',
-          status: 'ACTIVE',
-          createAt: '2022-09-01T01:24:07.000Z',
-          deleteAt: null,
+          success: true,
+          timestamp: '2022-09-05T02:34:13.081Z',
+          message: 'Created',
+          data: {
+            user: {
+              id: 7,
+              email: 'seastory624@gmail.com',
+              name: '장성우',
+              gender: '남자',
+              age: 27,
+              role: 'CUSTOMER',
+              status: 'ACTIVE',
+              createAt: '2022-09-05T02:15:34.000Z',
+              deleteAt: null,
+            },
+            token:
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuyepeyEseyasCIsInN1YiI6Nywicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNjYyMzQ1MjUzLCJleHAiOjE2NjI0Mjk4NTN9.PWDhSZaQHCh6jNQDyqnNnYbQd0-jkvzbb9H-NLrjmFo',
+          },
         },
       },
     };
@@ -83,7 +102,13 @@ export class UserAPIDocs {
     return {
       description: '회원정보 삭제 성공 응답값입니다.',
       status: 200,
-      schema: { example: { success: true } },
+      schema: {
+        example: {
+          success: true,
+          timestamp: '2022-09-05T02:34:36.236Z',
+          message: 'OK',
+        },
+      },
     };
   }
 
@@ -96,13 +121,14 @@ export class UserAPIDocs {
 
   static deleteUserUnauthorizedResponse() {
     return {
-      description: '권한이 없다던지 이미 없는 계정일 경우',
+      description: '권한이 없거나 이미 없는 계정일 경우',
       status: 401,
       schema: {
         example: {
-          statusCode: 401,
-          message: '존재하지 않는 계정입니다.',
-          error: 'Unauthorized',
+          success: false,
+          timestamp: '2022-09-05T02:38:45.537Z',
+          message: '사용자 정보를 찾을 수 없습니다.',
+          data: {},
         },
       },
     };
