@@ -16,7 +16,12 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
-    const token = req.headers.authorization.split(' ')[1];
+
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+      throw new ForbiddenException('회원가입 또는 로그인이 필요합니다.');
+    }
+    const token = authorization.split(' ')[1];
     req.user = this.validateToken(token);
     if (!req.user) {
       throw new ForbiddenException('존재하지 않는 사용자입니다.');
