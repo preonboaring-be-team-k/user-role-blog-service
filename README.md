@@ -19,10 +19,10 @@
 
 | 이름   | 깃허브                           | 역할                                                |
 | ------ | -------------------------------- | --------------------------------------------------- |
-| 김현균 | https://github.com/Ksanbal       | 공지사항 CRUD, 개발환경 세팅, 코드 리뷰             |
+| 김현균 | https://github.com/Ksanbal       | 자유게시판 CRUD, 개발환경 세팅, 코드 리뷰             |
 | 남혜민 | https://github.com/minenam       | 회원 등급에 따른 게시판 접근 제어, 이슈 템플릿 작성 |
 | 박규성 | https://github.com/gyus13        | 이용 통계집계, 코드 리뷰                            |
-| 위찬복 | https://github.com/chanbokW      | 자유게시판 CRUD                                     |
+| 위찬복 | https://github.com/chanbokW      | 운영게시판 CRUD                                     |
 | 이재후 | https://github.com/Arios67       | 공지사항 CRUD                                       |
 | 장성우 | https://github.com/sung-woo-jang | 회원가입, 로그인, 회원탈퇴, README 작성             |
 
