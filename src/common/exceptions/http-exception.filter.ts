@@ -19,13 +19,17 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
 
     if (typeof error == 'string') {
       response.status(status).json({
+        success: false,
+        timestamp: new Date().toISOString(),
         message: error,
         data: {},
       });
     } else {
       response.status(status).json({
-        message: error.message ?? error.error,
-        data: {},
+        success: false,
+        timestamp: new Date().toISOString(),
+        message: error.error,
+        data: error.message,
       });
     }
   }
