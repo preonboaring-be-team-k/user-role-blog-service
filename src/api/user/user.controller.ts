@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -7,16 +7,13 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthService } from '../auth/auth.service';
-import { User } from './decorator/user.decorator';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
-import { LocalAuthGuard } from '../auth/guard/local.guard';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
-import { JwtAuthGuard } from '../auth/guard/auth.guard';
-import { Response } from 'express';
+import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { User } from '../auth/decorator/user.decorator';
 
 @ApiTags('User API')
 @Controller('user')
@@ -52,7 +49,6 @@ export class UserController {
   @ApiOperation(UserAPIDocs.loginOperation())
   @ApiResponse(UserAPIDocs.loginResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.loginUnauthorizedResponse())
-  @UseGuards(LocalAuthGuard)
   @Post('/login')
   login(@Body() loginRequestDto: LoginRequestDto) {
     return this.authService.login(loginRequestDto);
@@ -66,7 +62,7 @@ export class UserController {
   @ApiOperation(UserAPIDocs.deleteUserOperation())
   @ApiResponse(UserAPIDocs.deleteUserResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.deleteUserUnauthorizedResponse())
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JWTAuthGuard)
   @Delete('/')
   deleteUser(@User() user) {
     return this.userService.deleteUserByEmail(user.id);
