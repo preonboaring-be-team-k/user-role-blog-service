@@ -10,7 +10,7 @@ import { response } from '../../config/response.utils';
 export class LogService {
   constructor(private dataSource: DataSource) {}
 
-  async retrieveLogs(request: any) {
+  async retrieveLogs(request) {
     try {
       let logs = [];
 

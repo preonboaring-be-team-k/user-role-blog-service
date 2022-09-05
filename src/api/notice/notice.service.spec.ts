@@ -28,7 +28,7 @@ class MockNoticeRepository {
   }
 
   delete() {
-    this.mockDB.pop();
+    return {affected: [this.mockDB.pop()].length};
   }
 }
 

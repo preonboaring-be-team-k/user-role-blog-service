@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -14,6 +19,7 @@ import * as Joi from 'joi';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { RolesGuard } from './api/auth/guard/role.guard';
 import { JwtService } from '@nestjs/jwt';
+import { LogModule } from './api/log/log.module';
 
 @Module({
   imports: [
@@ -30,6 +36,7 @@ import { JwtService } from '@nestjs/jwt';
     NoticeModule,
     FreeBoardModule,
     AuthModule,
+    LogModule,
     TypeOrmModule.forRootAsync(typeOrmAsyncModuleOptions),
   ],
   controllers: [AppController],

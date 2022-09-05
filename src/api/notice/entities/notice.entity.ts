@@ -4,9 +4,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Notice {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn()
     @ApiProperty({ description: 'id'})
-    id: string;
+    id: number;
 
     @Column()
     @ApiProperty({ description: '제목' })
@@ -19,7 +19,7 @@ export class Notice {
     @CreateDateColumn()
     @ApiProperty({ description: '작성일' })
     createAt: Date
-    
+
     @ApiProperty({ description: '작성자' })
     @ManyToOne(() => UserEntity, { eager: true })
     user: UserEntity

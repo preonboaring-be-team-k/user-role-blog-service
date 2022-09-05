@@ -22,6 +22,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
+import { AdminBoard } from '../../board/entities/admin-board.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -107,4 +108,8 @@ export class UserEntity extends BaseEntity {
     (freeBoard: FreeBoardEntity) => freeBoard.author,
   )
   freeBoards: FreeBoardEntity[];
+
+  // 운영진 Relation
+  @OneToMany(() => AdminBoard, (adminboard: AdminBoard) => adminboard.author)
+  adminboards: AdminBoard[];
 }
