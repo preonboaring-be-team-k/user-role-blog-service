@@ -1,7 +1,7 @@
 import {
   createParamDecorator,
   ExecutionContext,
-  HttpException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 export const User = createParamDecorator(
@@ -9,7 +9,7 @@ export const User = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
 
     if (request.user === undefined)
-      throw new HttpException('로그인 후 이용해주시기 바랍니다.', 400);
+      throw new UnauthorizedException('로그인 후 이용해주시기 바랍니다.');
 
     return request.user;
   },

@@ -1,4 +1,10 @@
-import { Injectable, ExecutionContext, HttpException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  ExecutionContext,
+  HttpException,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -16,6 +22,10 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
+
+    if (!req.headers.authorization)
+      throw new UnauthorizedException('로그인 후 이용해주시기 바랍니다.');
+
     const token = req.headers.authorization.split(' ')[1];
     req.user = this.validateToken(token);
     if (!req.user) {
