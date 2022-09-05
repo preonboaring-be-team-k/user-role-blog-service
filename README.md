@@ -2,7 +2,7 @@
 
 # user-role-blog-service
 
-원티드 프리온보딩 백엔드 코스의 Wayne_Hills_Ventures [기업과제](https://drive.google.com/file/d/1OyHiyNyUQCFw7oOuq50S4UZQouj7RvE2/view?usp=sharing)입니다.
+[회원 등급에 따른 게시판/통계 서비스](https://drive.google.com/file/d/1OyHiyNyUQCFw7oOuq50S4UZQouj7RvE2/view?usp=sharing)입니다.
 
 <div align="center">
   <img src="https://img.shields.io/badge/node-16.17.0-339933?logo=node.js"> 
