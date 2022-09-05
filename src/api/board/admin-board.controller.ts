@@ -16,13 +16,16 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guard/auth.guard';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { Role } from '../user/entities/role.enum';
 import { AdminBoardService } from './admin-board.service';
 import { BoardResponseDto } from './dtos/boardResponse.dto';
 import { CreateBoardDto } from './dtos/createBoard.dto';
 import { UpdateBoardDto } from './dtos/updateBoard.dto';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JWTAuthGuard)
+@Roles(Role.ADMIN)
 @ApiBearerAuth('Access Token')
 @Controller('admin/board')
 @ApiTags('운영진 게시판 API')

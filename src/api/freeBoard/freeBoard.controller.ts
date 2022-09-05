@@ -20,13 +20,13 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guard/auth.guard';
+import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
 import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JWTAuthGuard)
 @ApiBearerAuth('Access Token')
 @ApiTags('자유게시판')
 @Controller('free-board')

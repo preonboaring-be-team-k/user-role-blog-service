@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "../auth/guard/auth.guard";
-import { NoticeAPIDocs } from "./docs/notice.docs";
-import { NoticeInput } from "./dtos/notice.dto";
-import { Notice } from "./entities/notice.entity";
-import { NoticeService } from "./notice.service";
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { Role } from '../user/entities/role.enum';
+import { NoticeAPIDocs } from './docs/notice.docs';
+import { NoticeInput } from './dtos/notice.dto';
+import { Notice } from './entities/notice.entity';
+import { NoticeService } from './notice.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JWTAuthGuard)
 @ApiBearerAuth('Access Token')
 @Controller('notice')
 @ApiTags('notice')
@@ -19,6 +21,7 @@ export class NoticeController {
      * @param description 공지 본문
      * @returns 생성한 Notice object
      */
+    @Roles(Role.ADMIN)
     @Post()
     @ApiOperation(NoticeAPIDocs.CreateOperation())
     @ApiCreatedResponse({type: Notice})
@@ -35,6 +38,7 @@ export class NoticeController {
      * @param description 공지 본문
      * @returns 생성한 Notice 객체
      */
+    @Roles(Role.ADMIN)
     @Put(':id')
     @HttpCode(204)
     @ApiOperation(NoticeAPIDocs.UpdateOperation())
@@ -52,6 +56,7 @@ export class NoticeController {
      * @param id 삭제할 공지 id
      * @returns '공지 삭제'
      */
+    @Roles(Role.ADMIN)
     @Delete(':id')
     @ApiOperation(NoticeAPIDocs.DeleteByIdOperation())
     @ApiOkResponse({type: String})
