@@ -103,17 +103,7 @@
 
 - 성별, 나이, 접속 시간, 걔정 활성화 상태별 통계
 
-### 2. 개발 조건
-
-#### 1. RDB 사용
-
-#### 2. 요구사항에 맞게 자유로이 개발
-
-#### 3. 필요한 조건 자유롭게 추가 가능
-
-#### 4. 통계가 다양할 수록 가산점
-
-## 3. ERD
+### 2. ERD
 
 <img width="785" alt="스크린샷 2022-09-01 오후 10 44 18" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqXmnj%2FbtrLqdtArd7%2FQ618kVhlbliQP6PtgJczZK%2Fimg.png">
 </br>
