@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Gender, PAGE_SIZE, Sort, Status } from './entity/variables.util';
 import { Log } from './entity/log.entity';
-import { User } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 import { makeResponse } from '../../config/function.utils';
 import { response } from '../../config/response.utils';
 
@@ -10,14 +10,14 @@ import { response } from '../../config/response.utils';
 export class LogService {
   constructor(private dataSource: DataSource) {}
 
-  async retrieveLogs(request: any) {
+  async retrieveLogs(request) {
     try {
       let logs = [];
 
       // query 생성
       const queryResult = this.dataSource.createQueryBuilder(Log, 'log');
 
-      queryResult.leftJoin(User, 'user', 'user.id = log.userId');
+      queryResult.leftJoin(UserEntity, 'user', 'user.id = log.userId');
 
       // 상태 필터
       if (request.query.status == Status.ACTIVE) {
