@@ -3,12 +3,13 @@ import {
   ApiHeader,
   ApiOperation,
   ApiQuery,
-  ApiResponse,
+  ApiResponse, ApiTags,
 } from '@nestjs/swagger';
 import { GetLogsResponse } from './dto/getLogs.response';
 import { Gender, SearchType, Sort, Status } from './entity/variables.util';
 import { LogService } from './log.service';
 
+@ApiTags('Log API')
 @Controller('log')
 export class LogController {
   constructor(private readonly logService: LogService) {}

@@ -19,7 +19,7 @@ export class Notice {
     @CreateDateColumn()
     @ApiProperty({ description: '작성일' })
     createAt: Date
-    
+
     @ApiProperty({ description: '작성자' })
     @ManyToOne(() => UserEntity, { eager: true })
     user: UserEntity

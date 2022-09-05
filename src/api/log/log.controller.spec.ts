@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LogController } from './log.controller';
+import {request} from "http";
 
 describe('LogController', () => {
   let controller: LogController;
@@ -15,4 +16,8 @@ describe('LogController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  // it('/movies (GET)', () => {
+  //   return request(app.getHttpServer()).get('/log').expect(200).expect([]);
+  // })
 });
