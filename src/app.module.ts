@@ -7,6 +7,7 @@ import { typeOrmAsyncModuleOptions } from './config/typeorm.config';
 import { BoardModule } from './api/board/admin-board.module';
 import { NoticeModule } from './api/notice/notice.module';
 import { FreeBoardModule } from './api/freeBoard/freeBoard.module';
+import {LogModule} from "./api/log/log.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { FreeBoardModule } from './api/freeBoard/freeBoard.module';
     BoardModule,
     NoticeModule,
     FreeBoardModule,
+    LogModule,
     TypeOrmModule.forRootAsync(typeOrmAsyncModuleOptions)],
   controllers: [AppController],
   providers: [AppService],
