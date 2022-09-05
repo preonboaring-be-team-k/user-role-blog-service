@@ -22,6 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { CommonResponse } from '../../common/responses/common.response';
 import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { ICurrentUser, User } from '../user/decorator/user.decorator';
 import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
@@ -46,8 +47,14 @@ export class FreeBoardController {
   @ApiOperation(FreeBoardAPIDocs.CreateOperation())
   @ApiCreatedResponse(FreeBoardAPIDocs.CreateCreatedResponse())
   @ApiBadRequestResponse(CommonResponse.BadRequestResponse())
-  async createFreeBoard(@Body() createFreeBoardDto: CreateFreeBoardDto) {
-    return this.freeBoardService.createFreeBoard(createFreeBoardDto);
+  async createFreeBoard(
+    @Body() createFreeBoardDto: CreateFreeBoardDto,
+    @User() currentUser: ICurrentUser,
+  ) {
+    return this.freeBoardService.createFreeBoard(
+      createFreeBoardDto,
+      currentUser.sub,
+    );
   }
 
   /**
@@ -96,8 +103,13 @@ export class FreeBoardController {
   async editFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
     @Body() editFreeBoardDto: EditFreeBoardDto,
+    @User() currentUser: ICurrentUser,
   ) {
-    return this.freeBoardService.editFreeBoardById(id, editFreeBoardDto);
+    return this.freeBoardService.editFreeBoardById(
+      id,
+      editFreeBoardDto,
+      currentUser.sub,
+    );
   }
 
   /**
@@ -111,7 +123,10 @@ export class FreeBoardController {
   @ApiOperation(FreeBoardAPIDocs.DeleteByIdOperation())
   @ApiNoContentResponse(CommonResponse.NoContentResponse())
   @ApiNotFoundResponse(CommonResponse.NotFoundResponse())
-  async deleteFreeBoardById(@Param('id', ParseIntPipe) id: number) {
-    return this.freeBoardService.deleteFreeBoardById(id);
+  async deleteFreeBoardById(
+    @Param('id', ParseIntPipe) id: number,
+    @User() currentUser: ICurrentUser,
+  ) {
+    return this.freeBoardService.deleteFreeBoardById(id, currentUser.sub);
   }
 }

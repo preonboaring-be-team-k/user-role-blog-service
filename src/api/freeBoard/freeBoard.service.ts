@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../user/entities/user.entity';
@@ -25,10 +25,13 @@ export class FreeBoardService {
    *
    * @return FreeBoardDto
    */
-  async createFreeBoard(createFreeBoardDto: CreateFreeBoardDto) {
+  async createFreeBoard(
+    createFreeBoardDto: CreateFreeBoardDto,
+    userId: number,
+  ) {
     // [x] User 정보 가져오기
     const user = await this.userRepository.findOneBy({
-      id: createFreeBoardDto.userId,
+      id: userId,
     });
 
     const newFreeBoard = this.freeBoardRepository.create(createFreeBoardDto);
@@ -58,16 +61,13 @@ export class FreeBoardService {
    * @returns FreeBoardDto
    */
   async getFreeBoardById(id: number) {
-    const count = await this.freeBoardRepository.countBy({ id });
-    if (count < 1) {
-      throw new HttpException('Not found', 404);
-    }
-
-    // const freeBoard = await this.freeBoardRepository.findOneBy({ id });
     const freeBoard = await this.freeBoardRepository.findOne({
       where: { id },
       relations: ['author'],
     });
+
+    if (!freeBoard) throw new HttpException('Not found', 404);
+
     return new FreeBoardDto(freeBoard);
   }
 
@@ -80,18 +80,30 @@ export class FreeBoardService {
    *
    * @return FreeBoardDto
    */
-  async editFreeBoardById(id: number, editFreeBoardDto: EditFreeBoardDto) {
+  async editFreeBoardById(
+    id: number,
+    editFreeBoardDto: EditFreeBoardDto,
+    userId: number,
+  ) {
+    const freeBoard = await this.freeBoardRepository.findOne({
+      where: { id },
+      relations: ['author'],
+    });
+
     // [x] Not found 예외처리
-    const count = await this.freeBoardRepository.countBy({ id });
-    if (count < 1) {
-      throw new HttpException('Not found', 404);
+    if (!freeBoard) throw new HttpException('Not found', 404);
+
+    if (freeBoard.author.id !== userId) {
+      throw new HttpException('접근할 수 없습니다.', HttpStatus.UNAUTHORIZED);
     }
 
     // [x] dto가 아예 비어있으면 성공으로 반환
-    if (editFreeBoardDto.title || editFreeBoardDto.description) {
-      await this.freeBoardRepository.update({ id }, editFreeBoardDto);
-    }
-    const freeBoard = await this.freeBoardRepository.findOneBy({ id });
+    if (editFreeBoardDto.title) freeBoard.title = editFreeBoardDto.title;
+    if (editFreeBoardDto.description)
+      freeBoard.description = editFreeBoardDto.description;
+
+    freeBoard.save();
+
     return new FreeBoardDto(freeBoard);
   }
 
@@ -101,11 +113,17 @@ export class FreeBoardService {
    * @code writer 김현균
    * @description 자유게시판 삭제 API
    */
-  async deleteFreeBoardById(id: number) {
+  async deleteFreeBoardById(id: number, userId: number) {
+    const freeBoard = await this.freeBoardRepository.findOne({
+      where: { id },
+      relations: ['author'],
+    });
+
     // [x] Not found 예외처리
-    const count = await this.freeBoardRepository.countBy({ id });
-    if (count < 1) {
-      throw new HttpException('Not found', 404);
+    if (!freeBoard) throw new HttpException('Not found', 404);
+
+    if (freeBoard.author.id !== userId) {
+      throw new HttpException('접근할 수 없습니다.', HttpStatus.UNAUTHORIZED);
     }
 
     await this.freeBoardRepository.softDelete({ id });
