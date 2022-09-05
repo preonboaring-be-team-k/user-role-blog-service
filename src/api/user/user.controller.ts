@@ -7,10 +7,12 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { User } from '../auth/decorator/user.decorator';
+import { AuthService } from '../auth/auth.service';
+import { User } from './decorator/user.decorator';
 import { UserAPIDocs } from './docs/user.docs';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { LoginRequestDto } from './dtos/loginRequest.dto';
+import { LocalAuthGuard } from '../auth/guard/local.guard';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/guard/auth.guard';
@@ -21,7 +23,7 @@ import { Response } from 'express';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private authService: AuthService,
+    private readonly authService: AuthService,
   ) {}
 
   /**
@@ -50,17 +52,10 @@ export class UserController {
   @ApiOperation(UserAPIDocs.loginOperation())
   @ApiResponse(UserAPIDocs.loginResponse())
   @ApiUnauthorizedResponse(UserAPIDocs.loginUnauthorizedResponse())
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(
-    @Res({ passthrough: true }) res: Response,
-    @Body() loginRequestDto: LoginRequestDto,
-  ) {
-    const access_token = await this.authService.login(
-      loginRequestDto.email,
-      loginRequestDto.password,
-    );
-
-    return res.set({ access_token }).json({ success: true });
+  login(@Body() loginRequestDto: LoginRequestDto) {
+    return this.authService.login(loginRequestDto);
   }
 
   /**

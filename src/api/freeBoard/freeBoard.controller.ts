@@ -20,13 +20,14 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { CommonResponse } from '../../common/responses/common.response';
 import { JwtAuthGuard } from '../auth/guard/auth.guard';
 import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JWTAuthGuard)
 @ApiBearerAuth('Access Token')
 @ApiTags('자유게시판')
 @Controller('free-board')
@@ -44,7 +45,7 @@ export class FreeBoardController {
   @Post()
   @ApiOperation(FreeBoardAPIDocs.CreateOperation())
   @ApiCreatedResponse(FreeBoardAPIDocs.CreateCreatedResponse())
-  @ApiBadRequestResponse(FreeBoardAPIDocs.BadRequestResponse())
+  @ApiBadRequestResponse(CommonResponse.BadRequestResponse())
   async createFreeBoard(@Body() createFreeBoardDto: CreateFreeBoardDto) {
     return this.freeBoardService.createFreeBoard(createFreeBoardDto);
   }
@@ -75,7 +76,7 @@ export class FreeBoardController {
   @Get(':id')
   @ApiOperation(FreeBoardAPIDocs.GetByIdOperation())
   @ApiOkResponse(FreeBoardAPIDocs.GetByIdOkResponse())
-  @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
+  @ApiNotFoundResponse(CommonResponse.NotFoundResponse())
   async getFreeBoardById(@Param('id', ParseIntPipe) id: number) {
     return this.freeBoardService.getFreeBoardById(id);
   }
@@ -91,7 +92,7 @@ export class FreeBoardController {
   @Patch(':id')
   @ApiOperation(FreeBoardAPIDocs.EditOperation())
   @ApiOkResponse(FreeBoardAPIDocs.EditOkResponse())
-  @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
+  @ApiNotFoundResponse(CommonResponse.NotFoundResponse())
   async editFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
     @Body() editFreeBoardDto: EditFreeBoardDto,
@@ -108,8 +109,8 @@ export class FreeBoardController {
   @Delete(':id')
   @HttpCode(204)
   @ApiOperation(FreeBoardAPIDocs.DeleteByIdOperation())
-  @ApiNoContentResponse(FreeBoardAPIDocs.NoContentResponse())
-  @ApiNotFoundResponse(FreeBoardAPIDocs.NotFoundResponse())
+  @ApiNoContentResponse(CommonResponse.NoContentResponse())
+  @ApiNotFoundResponse(CommonResponse.NotFoundResponse())
   async deleteFreeBoardById(@Param('id', ParseIntPipe) id: number) {
     return this.freeBoardService.deleteFreeBoardById(id);
   }

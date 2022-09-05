@@ -1,25 +1,35 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcryptjs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LoginRequestDto } from '../user/dtos/loginRequest.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
+    private userService: UserService,
   ) {}
 
-  async login(email: string, password: string) {
-    const user = await this.userRepository.findOne({ where: { email } });
-    if (!user && !(await bcrypt.compare(password, user.password)))
-      throw new UnauthorizedException('비밀번호가 틀립니다.');
+  async generateAccessToken(user) {
+    const payload = { username: user.name, sub: user.id, role: user.role };
+    const token = this.jwtService.sign(payload);
+    return token;
+  }
 
-    const payload = { username: user.name, sub: user.id };
-    const access_token = this.jwtService.sign(payload);
-    return { access_token };
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.userService.findByEmail(email);
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      delete user.password;
+      const token = await this.generateAccessToken(user);
+      return { user, token };
+    } else throw new UnauthorizedException('비밀번호가 틀립니다.');
+  }
+
+  async login(loginRequestDto: LoginRequestDto) {
+    const { email, password } = loginRequestDto;
+    const result = await this.validateUser(email, password);
+    return result;
   }
 }
