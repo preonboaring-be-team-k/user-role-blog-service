@@ -8,7 +8,6 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -23,6 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { CommonResponse } from '../../common/responses/common.response';
 import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { ICurrentUser, User } from '../user/decorator/user.decorator';
 import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
@@ -49,11 +49,11 @@ export class FreeBoardController {
   @ApiBadRequestResponse(CommonResponse.BadRequestResponse())
   async createFreeBoard(
     @Body() createFreeBoardDto: CreateFreeBoardDto,
-    @Request() req,
+    @User() currentUser: ICurrentUser,
   ) {
     return this.freeBoardService.createFreeBoard(
       createFreeBoardDto,
-      req.user.sub,
+      currentUser.sub,
     );
   }
 
@@ -103,12 +103,12 @@ export class FreeBoardController {
   async editFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
     @Body() editFreeBoardDto: EditFreeBoardDto,
-    @Request() req,
+    @User() currentUser: ICurrentUser,
   ) {
     return this.freeBoardService.editFreeBoardById(
       id,
       editFreeBoardDto,
-      req.user.sub,
+      currentUser.sub,
     );
   }
 
@@ -125,8 +125,8 @@ export class FreeBoardController {
   @ApiNotFoundResponse(CommonResponse.NotFoundResponse())
   async deleteFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
-    @Request() req,
+    @User() currentUser: ICurrentUser,
   ) {
-    return this.freeBoardService.deleteFreeBoardById(id, req.user.sub);
+    return this.freeBoardService.deleteFreeBoardById(id, currentUser.sub);
   }
 }

@@ -61,16 +61,13 @@ export class FreeBoardService {
    * @returns FreeBoardDto
    */
   async getFreeBoardById(id: number) {
-    const count = await this.freeBoardRepository.countBy({ id });
-    if (count < 1) {
-      throw new HttpException('Not found', 404);
-    }
-
-    // const freeBoard = await this.freeBoardRepository.findOneBy({ id });
     const freeBoard = await this.freeBoardRepository.findOne({
       where: { id },
       relations: ['author'],
     });
+
+    if (!freeBoard) throw new HttpException('Not found', 404);
+
     return new FreeBoardDto(freeBoard);
   }
 
@@ -88,17 +85,13 @@ export class FreeBoardService {
     editFreeBoardDto: EditFreeBoardDto,
     userId: number,
   ) {
-    const freeBoards = await this.freeBoardRepository.find({
+    const freeBoard = await this.freeBoardRepository.findOne({
       where: { id },
       relations: ['author'],
     });
 
     // [x] Not found 예외처리
-    if (freeBoards.length < 1) {
-      throw new HttpException('Not found', 404);
-    }
-
-    const freeBoard = freeBoards[0];
+    if (!freeBoard) throw new HttpException('Not found', 404);
 
     if (freeBoard.author.id !== userId) {
       throw new HttpException('접근할 수 없습니다.', HttpStatus.UNAUTHORIZED);
@@ -121,17 +114,13 @@ export class FreeBoardService {
    * @description 자유게시판 삭제 API
    */
   async deleteFreeBoardById(id: number, userId: number) {
-    const freeBoards = await this.freeBoardRepository.find({
+    const freeBoard = await this.freeBoardRepository.findOne({
       where: { id },
       relations: ['author'],
     });
 
     // [x] Not found 예외처리
-    if (freeBoards.length < 1) {
-      throw new HttpException('Not found', 404);
-    }
-
-    const freeBoard = freeBoards[0];
+    if (!freeBoard) throw new HttpException('Not found', 404);
 
     if (freeBoard.author.id !== userId) {
       throw new HttpException('접근할 수 없습니다.', HttpStatus.UNAUTHORIZED);
