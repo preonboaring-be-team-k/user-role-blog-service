@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Role } from './role.enum';
 import { Status } from './status.enum';
+import { AdminBoard } from '../../board/entities/admin-board.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -83,4 +84,8 @@ export class UserEntity {
     (freeBoard: FreeBoardEntity) => freeBoard.author,
   )
   freeBoards: FreeBoardEntity[];
+
+  // 운영진 Relation
+  @OneToMany(() => AdminBoard, (adminboard: AdminBoard) => adminboard.author)
+  adminboards: AdminBoard[];
 }

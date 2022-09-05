@@ -4,13 +4,14 @@ import { JwtService } from '@nestjs/jwt';
 // import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from '../user/entities/user.entity';
 import { AdminBoardController } from './admin-board.controller';
 import { AdminBoardService } from './admin-board.service';
 import { AdminBoard } from './entities/admin-board.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([AdminBoard]),
+    TypeOrmModule.forFeature([AdminBoard, UserEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [AdminBoardController],
