@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/createUser.dto';
@@ -12,8 +17,7 @@ import { LoginRequestDto } from './dtos/loginRequest.dto';
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
-    // private readonly authService: AuthService,
+    private userRepository: Repository<UserEntity>, // private readonly authService: AuthService,
   ) {}
 
   async signup(createUserDto: CreateUserDto) {
@@ -41,6 +45,9 @@ export class UserService {
 
   async deleteUserByEmail(id: number) {
     const found = await this.userRepository.findOne({ where: { id } });
+
+    if (!found) throw new HttpException('사용자 정보를 찾을 수 없습니다.', 404);
+
     found.deleteAt = new Date();
     found.status = Status.STOP;
     await this.userRepository.save(found);
