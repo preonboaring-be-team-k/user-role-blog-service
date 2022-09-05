@@ -34,6 +34,11 @@ import { UpdateBoardDto } from './dtos/updateBoard.dto';
 export class AdminBoardController {
   constructor(private adminBoardService: AdminBoardService) {}
 
+  /**
+   * @description 운영진 게시물 등록 API
+   * @param createBoardDto 게시물 등록 dto
+   * @returns 게시물 등록 번호
+   */
   @Post()
   @ApiOperation({
     summary: '운영진 게시물 등록 API',
@@ -47,10 +52,13 @@ export class AdminBoardController {
     @Body() createBoardDto: CreateBoardDto,
     @Req() req,
   ): Promise<number> {
-    console.log('hello', req);
     return this.adminBoardService.createBoard(createBoardDto, req.user.sub);
   }
 
+  /**
+   * @description 운영진 전체 게시물 조회
+   * @returns 운영진 전체 게시물
+   */
   @Get()
   @ApiOperation({
     summary: '운영진 전체 게시물 조회 API',
@@ -64,6 +72,11 @@ export class AdminBoardController {
     return this.adminBoardService.retrieveBoards();
   }
 
+  /**
+   * @description 운영진이 게시물을 조회
+   * @param id 게시물 번호
+   * @returns 게시물 상세정보
+   */
   @Get('/:id')
   @ApiOperation({
     summary: '운영진 게시물 조회 API',
@@ -77,6 +90,12 @@ export class AdminBoardController {
     return this.adminBoardService.retrieveBoard(id);
   }
 
+  /**
+   *
+   * @param id 게시물번호
+   * @param updateBoardDto 업데이트할게시물의 정보
+   * @returns 수정완료 후 게시물의정보
+   */
   @Put('/:id')
   @ApiOperation({
     summary: '운영진 게시물 수정 API',
@@ -94,6 +113,11 @@ export class AdminBoardController {
     return this.adminBoardService.editBoard(id, updateBoardDto, req.user.sub);
   }
 
+  /**
+   *
+   * @param id 게시물번호
+   * @returns 게시물 삭제 메시지
+   */
   @Delete('/:id')
   @ApiOperation({
     summary: '운영진 게시물 삭제 API',
