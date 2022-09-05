@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -46,8 +47,14 @@ export class FreeBoardController {
   @ApiOperation(FreeBoardAPIDocs.CreateOperation())
   @ApiCreatedResponse(FreeBoardAPIDocs.CreateCreatedResponse())
   @ApiBadRequestResponse(CommonResponse.BadRequestResponse())
-  async createFreeBoard(@Body() createFreeBoardDto: CreateFreeBoardDto) {
-    return this.freeBoardService.createFreeBoard(createFreeBoardDto);
+  async createFreeBoard(
+    @Body() createFreeBoardDto: CreateFreeBoardDto,
+    @Request() req,
+  ) {
+    return this.freeBoardService.createFreeBoard(
+      createFreeBoardDto,
+      req.user.sub,
+    );
   }
 
   /**
@@ -96,8 +103,13 @@ export class FreeBoardController {
   async editFreeBoardById(
     @Param('id', ParseIntPipe) id: number,
     @Body() editFreeBoardDto: EditFreeBoardDto,
+    @Request() req,
   ) {
-    return this.freeBoardService.editFreeBoardById(id, editFreeBoardDto);
+    return this.freeBoardService.editFreeBoardById(
+      id,
+      editFreeBoardDto,
+      req.user.sub,
+    );
   }
 
   /**
@@ -111,7 +123,10 @@ export class FreeBoardController {
   @ApiOperation(FreeBoardAPIDocs.DeleteByIdOperation())
   @ApiNoContentResponse(CommonResponse.NoContentResponse())
   @ApiNotFoundResponse(CommonResponse.NotFoundResponse())
-  async deleteFreeBoardById(@Param('id', ParseIntPipe) id: number) {
-    return this.freeBoardService.deleteFreeBoardById(id);
+  async deleteFreeBoardById(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() req,
+  ) {
+    return this.freeBoardService.deleteFreeBoardById(id, req.user.sub);
   }
 }
