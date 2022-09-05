@@ -4,9 +4,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Notice {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn()
     @ApiProperty({ description: 'id'})
-    id: string;
+    id: number;
 
     @Column()
     @ApiProperty({ description: '제목' })
