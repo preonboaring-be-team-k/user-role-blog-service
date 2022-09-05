@@ -21,7 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CommonResponse } from '../../common/responses/common.response';
-import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard'
+import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
 import { FreeBoardAPIDocs } from './docs/freeBoard.docs';
 import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
