@@ -1,6 +1,7 @@
 import { FreeBoardEntity } from '../../freeBoard/entities/freeBoard.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -23,7 +24,7 @@ import {
 import { Exclude } from 'class-transformer';
 
 @Entity('user')
-export class UserEntity {
+export class UserEntity extends BaseEntity {
   @ApiProperty({
     example: 1,
     description: 'id - 자동생성',

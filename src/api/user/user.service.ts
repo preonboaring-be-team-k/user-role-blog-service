@@ -40,6 +40,7 @@ export class UserService {
     });
     const result = await this.userRepository.save(user);
     delete result.password;
+    delete result.deleteAt;
     return result;
   }
 
@@ -51,7 +52,7 @@ export class UserService {
     found.deleteAt = new Date();
     found.status = Status.STOP;
     await this.userRepository.save(found);
-    return { success: true };
+    return;
   }
 
   async findByEmail(email: string) {
