@@ -27,7 +27,7 @@ import { CreateFreeBoardDto } from './dtos/createFreeBoard.dto';
 import { EditFreeBoardDto } from './dtos/editFreeBoard.dto';
 import { FreeBoardService } from './freeBoard.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JWTAuthGuard)
 @ApiBearerAuth('Access Token')
 @ApiTags('자유게시판')
 @Controller('free-board')

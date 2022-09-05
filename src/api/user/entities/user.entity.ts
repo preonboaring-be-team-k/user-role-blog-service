@@ -11,7 +11,7 @@ import {
 import { Role } from './role.enum';
 import { Status } from './status.enum';
 
-@Entity('User')
+@Entity('user')
 export class UserEntity {
   @ApiProperty({
     example: 1,
