@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } 
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { JWTAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { ICurrentUser, User } from '../user/decorator/user.decorator';
 import { Role } from '../user/entities/role.enum';
 import { NoticeAPIDocs } from './docs/notice.docs';
 import { NoticeInput } from './dtos/notice.dto';
@@ -26,10 +27,10 @@ export class NoticeController {
     @ApiOperation(NoticeAPIDocs.CreateOperation())
     @ApiCreatedResponse({type: Notice})
     async create(
-        @Body() input: NoticeInput
-        // @CurrentUser() currentUser: ICurrentUser,
+        @Body() input: NoticeInput,
+        @User() currentUser: ICurrentUser
     ){
-        return await this.noticeService.create(input)
+        return await this.noticeService.create(input, currentUser.sub)
     }
 
     /**
@@ -40,15 +41,15 @@ export class NoticeController {
      */
     @Roles(Role.ADMIN)
     @Put(':id')
-    @HttpCode(204)
     @ApiOperation(NoticeAPIDocs.UpdateOperation())
     @ApiNoContentResponse(NoticeAPIDocs.NoContentResponse())
     @ApiCreatedResponse({type: Notice})
     async update(
-        @Param('id') id: string,
-        @Body() input: NoticeInput
+        @Param('id') id: number,
+        @Body() input: NoticeInput,
+        @User() currentUser: ICurrentUser
     ){
-        return await this.noticeService.update(id, input)
+        return await this.noticeService.update(id, input, currentUser.sub)
     }
 
     /**
@@ -62,9 +63,10 @@ export class NoticeController {
     @ApiOkResponse({type: String})
     @ApiNoContentResponse(NoticeAPIDocs.NoContentResponse())
     async delete(
-        @Param('id') id: string,
+        @Param('id') id: number,
+        @User() currentuser: ICurrentUser
     ){
-        return await this.noticeService.delete(id)
+        return await this.noticeService.delete(id, currentuser.sub)
     }
 
     /**
@@ -88,7 +90,7 @@ export class NoticeController {
     @ApiOkResponse({type: Notice})
     @ApiNoContentResponse(NoticeAPIDocs.NoContentResponse())
     async findOne(
-        @Param('id') id: string
+        @Param('id') id: number
     ){
         return await this.noticeService.findOne(id)
     }

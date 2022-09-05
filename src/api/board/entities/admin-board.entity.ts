@@ -1,8 +1,11 @@
+import { UserEntity } from '../../user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,9 +34,16 @@ export class AdminBoard {
   @Column()
   isDeleted: boolean;
 
-  constructor(title: string, discription: string) {
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.adminboards)
+  @JoinColumn({
+    name: 'user_id',
+  })
+  author: UserEntity;
+
+  constructor(title: string, discription: string, user: UserEntity) {
     this.title = title;
     this.discription = discription;
+    this.author = user;
     this.isDeleted = false;
   }
 
