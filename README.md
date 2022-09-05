@@ -105,7 +105,7 @@
 
 ### 2. ERD
 
-<img width="785" alt="스크린샷 2022-09-01 오후 10 44 18" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqXmnj%2FbtrLqdtArd7%2FQ618kVhlbliQP6PtgJczZK%2Fimg.png">
+<img width="785" alt="스크린샷 2022-09-01 오후 10 44 18" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FvVJUr%2FbtrLuxdGgof%2FeDW71hQ8sNjLSKlJztkzFk%2Fimg.png">
 </br>
 
 # 참조문서
