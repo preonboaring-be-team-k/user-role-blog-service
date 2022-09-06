@@ -1,6 +1,4 @@
-# Wayne_Hills_Ventures 기업과제
-
-# user-role-blog-service
+# user-role-blog-service API Server
 
 [회원 등급에 따른 게시판/통계 서비스](https://drive.google.com/file/d/1OyHiyNyUQCFw7oOuq50S4UZQouj7RvE2/view?usp=sharing)입니다.
 
