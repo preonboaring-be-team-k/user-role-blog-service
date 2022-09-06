@@ -1,7 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, PickType } from "@nestjs/swagger";
 import { Notice } from "../entities/notice.entity";
 
-export class NoticeDto extends Notice {
+export class NoticeListDto extends PickType(Notice, [
+  'id',
+  'title',
+  'createAt',
+]) {
   @ApiProperty({
     example: '작성자',
     required: true,
@@ -9,10 +13,9 @@ export class NoticeDto extends Notice {
   authorName: string
 
   constructor(notice: Notice) {
-    super()
+    super();
     this.id = notice.id;
     this.title = notice.title;
-    this.description = notice.description;
     this.createAt = notice.createAt;
     this.authorName = notice.user.name
   }
